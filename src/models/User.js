@@ -19,7 +19,7 @@ export default class User extends Model {
           type: Sequelize.STRING,
           defaultValue: '',
           unique: {
-            msg: 'Ocorreu um erro ao cadastrar o usuário. Por favor, tente novamente.',
+            msg: 'O e-mail já existe.',
           },
           validate: {
             isEmail: {
@@ -48,7 +48,9 @@ export default class User extends Model {
     );
 
     this.addHook('beforeSave', async (user) => {
-      user.password_hash = await bcrypt.hash(user.password, 8);
+      if (user.password) {
+        user.password_hash = await bcrypt.hash(user.password, 8);
+      }
     });
 
     return this;
