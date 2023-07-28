@@ -13,6 +13,7 @@ module.exports = {
     underscoredAll: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
+    last_name: 'last_name',
   },
   dialectOptions: {
     timezone: 'America/Sao_Paulo',
