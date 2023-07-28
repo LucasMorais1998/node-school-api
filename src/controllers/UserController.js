@@ -5,10 +5,13 @@ class UserController {
     try {
       const users = await User.findAll();
 
+      if (users.length === 0) return res.status(204).json([]);
+
       return res.json(users);
     } catch (error) {
-      console.error(error.errors.map((err) => err.message));
-      return res.json(null);
+      return res.status(500).json({
+        error: 'Internal server error.',
+      });
     }
   }
 
@@ -17,9 +20,7 @@ class UserController {
       const user = await User.findByPk(req.params.id);
 
       if (!user) {
-        return res.status(404).json({
-          error: 'Usuário não encontrado.',
-        });
+        return res.status(404).json({ error: 'Usuário não encontrado.' });
       }
 
       return res.json(user);
