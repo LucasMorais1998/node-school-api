@@ -20,13 +20,14 @@ class UserController {
       const user = await User.findByPk(req.params.id);
 
       if (!user) {
-        return res.status(404).json({ error: 'Usuário não encontrado.' });
+        return res.status(404).json({ errors: ['Usuário não encontrado.'] });
       }
 
       return res.json(user);
     } catch (error) {
-      return res.status(500).json({
-        error: 'Internal server error.',
+      console.error(error.errors.map((err) => err.message));
+      return res.status(400).json({
+        errors: error.errors.map((err) => err.message),
       });
     }
   }
@@ -61,7 +62,11 @@ class UserController {
       if (req.body.name === user.name && user.email === req.body.email) {
         return res
           .status(400)
-          .json({ errors: ['Os dados informados para atualização são iguais aos dados atuais.'] });
+          .json({
+            errors: [
+              'Os dados informados para atualização são iguais aos dados atuais.',
+            ],
+          });
       }
 
       const updatedUser = await user.update(req.body);
