@@ -12,6 +12,24 @@ class UserController {
     }
   }
 
+  async show(req, res) {
+    try {
+      const user = await User.findByPk(req.params.id);
+
+      if (!user) {
+        return res.status(404).json({
+          error: 'Usuário não encontrado.',
+        });
+      }
+
+      return res.json(user);
+    } catch (error) {
+      return res.status(500).json({
+        error: 'Internal server error.',
+      });
+    }
+  }
+
   async store(req, res) {
     try {
       const newUser = await User.create(req.body);
