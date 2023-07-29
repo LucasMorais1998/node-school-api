@@ -26,8 +26,6 @@ class UserController {
 
       const { name, email } = req.body;
 
-      console.log(name, email);
-
       if (!name && !email) {
         return res.status(400).json({
           errors: ['Nenhum dado de atualização foi enviado.'],
@@ -53,7 +51,10 @@ class UserController {
       }
 
       const updatedUser = await user.update(req.body);
-      return res.json(updatedUser);
+
+      const { id, name: updatedName, email: updatedEmail } = updatedUser;
+
+      return res.json({ id, updatedName, updatedEmail });
     } catch (error) {
       console.error(error.errors.map((err) => err.message));
       return res.status(400).json({
