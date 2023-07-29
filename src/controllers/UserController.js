@@ -9,8 +9,9 @@ class UserController {
 
       return res.json(users);
     } catch (error) {
-      return res.status(500).json({
-        error: 'Internal server error.',
+      console.error(error);
+      return res.status(400).json({
+        error: error.message,
       });
     }
   }
@@ -60,13 +61,11 @@ class UserController {
       }
 
       if (req.body.name === user.name && user.email === req.body.email) {
-        return res
-          .status(400)
-          .json({
-            errors: [
-              'Os dados informados para atualização são iguais aos dados atuais.',
-            ],
-          });
+        return res.status(400).json({
+          errors: [
+            'Os dados informados para atualização são iguais aos dados atuais.',
+          ],
+        });
       }
 
       const updatedUser = await user.update(req.body);
