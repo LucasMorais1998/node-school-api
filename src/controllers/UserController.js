@@ -16,23 +16,37 @@ class UserController {
 
   async update(req, res) {
     try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ['ID não enviado.'],
-        });
-      }
-
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.userId);
 
       if (!user) {
         return res.status(404).json({ errors: ['Usuário não encontrado.'] });
       }
 
-      if (req.body.name === user.name && user.email === req.body.email) {
+      const { name, email } = req.body;
+
+      console.log(name, email);
+
+      if (!name && !email) {
         return res.status(400).json({
-          errors: [
-            'Os dados informados para atualização são iguais aos dados atuais.',
-          ],
+          errors: ['Nenhum dado de atualização foi enviado.'],
+        });
+      }
+
+      let hasUpdates = false;
+
+      if (name && name !== user.name) {
+        user.name = name;
+        hasUpdates = true;
+      }
+
+      if (email && email !== user.email) {
+        user.email = email;
+        hasUpdates = true;
+      }
+
+      if (!hasUpdates) {
+        return res.status(400).json({
+          errors: ['Nenhum dado foi modificado.'],
         });
       }
 
