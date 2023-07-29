@@ -77,6 +77,30 @@ class UserController {
       });
     }
   }
+
+  async destroy(req, res) {
+    try {
+      if (!req.params.id) {
+        return res.status(400).json({
+          errors: ['ID não enviado.'],
+        });
+      }
+
+      const user = await User.findByPk(req.params.id);
+
+      if (!user) {
+        return res.status(404).json({ errors: ['Usuário não encontrado.'] });
+      }
+
+      await user.destroy();
+      return res.status(204).send();
+    } catch (error) {
+      console.error(error.errors.map((err) => err.message));
+      return res.status(400).json({
+        errors: error.errors.map((err) => err.message),
+      });
+    }
+  }
 }
 
 const userControllerInstance = new UserController();
