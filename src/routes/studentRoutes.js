@@ -4,6 +4,7 @@ import studentController from '../controllers/StudentController';
 
 const router = new Router();
 
+router.get('/', studentController.index);
 router.get('/:id', studentController.show);
 router.post('/', studentController.create);
 router.put('/:id', studentController.update);
