@@ -2,6 +2,21 @@
 import Student from '../models/Student';
 
 class StudentController {
+  async index(req, res) {
+    try {
+      const students = await Student.findAll();
+
+      if (students.length === 0) return res.status(204).json([]);
+
+      return res.json(students);
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({
+        error: error.message,
+      });
+    }
+  }
+
   async show(req, res) {
     try {
       const { id } = await req.params;
