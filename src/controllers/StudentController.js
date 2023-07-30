@@ -28,6 +28,34 @@ class StudentController {
     }
   }
 
+  async create(req, res) {
+    try {
+      const newStudent = await Student.create(req.body);
+
+      const {
+        name,
+        last_name,
+        email,
+        age,
+        weight,
+        height,
+      } = newStudent;
+
+      return res.status(201).json({
+        name,
+        last_name,
+        email,
+        age,
+        weight,
+        height,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        errors: error.errors.map((err) => err.message),
+      });
+    }
+  }
+
   async update(req, res) {
     try {
       const studentId = await req.params.id;
