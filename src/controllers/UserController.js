@@ -35,12 +35,10 @@ class UserController {
       let hasUpdates = false;
 
       if (name && name !== user.name) {
-        user.name = name;
         hasUpdates = true;
       }
 
       if (email && email !== user.email) {
-        user.email = email;
         hasUpdates = true;
       }
 
