@@ -4,6 +4,6 @@ import studentController from '../controllers/StudentController';
 
 const router = new Router();
 
-router.get('/', studentController.index);
+router.get('/:id', studentController.show);
 
 export default router;
