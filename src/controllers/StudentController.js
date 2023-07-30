@@ -27,6 +27,26 @@ class StudentController {
       });
     }
   }
+
+  async destroy(req, res) {
+    try {
+      const { id } = await req.params;
+
+      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+
+      const student = await Student.findByPk(id);
+
+      if (!student) return res.status(400).json({ errors: ['Aluno não encontrado.'] });
+
+      await student.destroy();
+      return res.status(204).send();
+    } catch (error) {
+      console.error(error.errors.map((err) => err.message));
+      return res.status(400).json({
+        errors: error.errors.map((err) => err.message),
+      });
+    }
+  }
 }
 
 const studentControllerInstance = new StudentController();
