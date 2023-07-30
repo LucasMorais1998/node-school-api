@@ -43,7 +43,7 @@ class StudentController {
     }
   }
 
-  async create(req, res) {
+  async store(req, res) {
     try {
       const newStudent = await Student.create(req.body);
 
