@@ -28,6 +28,59 @@ class StudentController {
     }
   }
 
+  async update(req, res) {
+    try {
+      const studentId = await req.params.id;
+
+      if (!studentId) {
+        return res.status(400).json({ errors: ['É necessário um ID.'] });
+      }
+
+      const student = await Student.findByPk(studentId);
+
+      if (!student) {
+        return res.status(400).json({ errors: ['Aluno não encontrado.'] });
+      }
+
+      const hasUpdates = Object.keys(req.body).some(
+        (field) => req.body[field] !== student[field],
+      );
+
+      if (!hasUpdates) {
+        return res.status(400).json({
+          errors: ['Nenhum dado foi modificado.'],
+        });
+      }
+
+      const updatedStudent = await student.update(req.body);
+
+      const {
+        name: updatedName,
+        last_name: updatedLast_name,
+        email: updatedEmail,
+        age: updatedAge,
+        weight: updatedWeight,
+        height: updatedHeight,
+      } = updatedStudent;
+
+      return res.json(
+        {
+          studentId,
+          updatedName,
+          updatedLast_name,
+          updatedEmail,
+          updatedAge,
+          updatedWeight,
+          updatedHeight,
+        },
+      );
+    } catch (error) {
+      return res.status(400).json({
+        errors: error.errors.map((err) => err.message),
+      });
+    }
+  }
+
   async destroy(req, res) {
     try {
       const { id } = await req.params;
