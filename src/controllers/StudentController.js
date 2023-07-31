@@ -73,13 +73,13 @@ class StudentController {
 
   async update(req, res) {
     try {
-      const studentId = await req.params.id;
+      const { id } = await req.params;
 
-      if (!studentId) {
+      if (!id) {
         return res.status(400).json({ errors: ['É necessário um ID.'] });
       }
 
-      const student = await Student.findByPk(studentId);
+      const student = await Student.findByPk(id);
 
       if (!student) {
         return res.status(400).json({ errors: ['Aluno não encontrado.'] });
@@ -108,7 +108,7 @@ class StudentController {
 
       return res.json(
         {
-          studentId,
+          studentId: id,
           updatedName,
           updatedLast_name,
           updatedEmail,
