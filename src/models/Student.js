@@ -7,7 +7,7 @@ export default class Student extends Model {
         name: {
           type: Sequelize.STRING,
           defaultValue: '',
-          validade: {
+          validate: {
             len: {
               args: [3, 255],
               msg: 'O nome precisa ter entre 3 e 255 caracteres.',
@@ -17,7 +17,7 @@ export default class Student extends Model {
         last_name: {
           type: Sequelize.STRING,
           defaultValue: '',
-          validade: {
+          validate: {
             len: {
               args: [3, 255],
               msg: 'O sobrenome precisa ter entre 3 e 255 caracteres.',
