@@ -12,6 +12,31 @@ class CourseController {
     }
   }
 
+  async show(req, res) {
+    try {
+      const { id } = await req.params;
+
+      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+
+      const course = await Course.findByPk(id);
+
+      if (!course) return res.status(400).json({ errors: ['Curso não encontrado.'] });
+
+      const { title, description, duration } = course;
+      const totalStudents = await Course.count({
+        where: { students_id: id },
+      });
+
+      return res.json({
+        title, description, duration, totalStudentsByCourse: totalStudents,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        error: error.message,
+      });
+    }
+  }
+
   async store(req, res) {
     try {
       const newCourse = await Course.create(req.body);
