@@ -60,6 +60,26 @@ class CourseController {
       });
     }
   }
+
+  async destroy(req, res) {
+    try {
+      const { id } = await req.params;
+
+      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+
+      const course = await Course.findByPk(id);
+
+      if (!course) return res.status(400).json({ errors: ['Curso não encontrado.'] });
+
+      await course.destroy();
+      return res.status(204).send();
+    } catch (error) {
+      console.error(error.errors.map((err) => err.message));
+      return res.status(400).json({
+        errors: error.errors.map((err) => err.message),
+      });
+    }
+  }
 }
 
 const courseControllerInstance = new CourseController();
