@@ -7,6 +7,9 @@ export default class Course extends Model {
         title: {
           type: Sequelize.STRING,
           defaultValue: '',
+          unique: {
+            msg: 'O curso já está cadastrado no sistema.',
+          },
           validate: {
             len: {
               args: [4, 60],
@@ -15,7 +18,7 @@ export default class Course extends Model {
           },
         },
         description: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           defaultValue: '',
         },
         duration: {
@@ -30,6 +33,7 @@ export default class Course extends Model {
       },
       {
         sequelize,
+        tableName: 'courses',
       },
     );
 
