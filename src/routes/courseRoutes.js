@@ -5,6 +5,7 @@ import courseController from '../controllers/CourseController';
 const router = new Router();
 
 router.get('/', courseController.index);
+router.get('/:id', courseController.show);
 router.post('/', courseController.store);
 
 export default router;
