@@ -48,6 +48,7 @@ class StudentController {
       const newStudent = await Student.create(req.body);
 
       const {
+        id,
         name,
         last_name,
         email,
@@ -57,6 +58,7 @@ class StudentController {
       } = newStudent;
 
       return res.status(201).json({
+        id,
         name,
         last_name,
         email,
