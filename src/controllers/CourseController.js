@@ -28,7 +28,11 @@ class CourseController {
       });
 
       return res.json({
-        title, description, duration, totalStudents,
+        id,
+        title,
+        description,
+        duration,
+        totalStudents,
       });
     } catch (error) {
       return res.status(400).json({
