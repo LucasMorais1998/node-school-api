@@ -61,6 +61,54 @@ class CourseController {
     }
   }
 
+  async update(req, res) {
+    try {
+      const { id } = await req.params;
+
+      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+
+      const course = await Course.findByPk(id);
+
+      if (!course) {
+        return res.status(400).json({ errors: ['Curso não encontrado.'] });
+      }
+
+      const hasUpdates = Object.keys(req.body).some(
+        (field) => req.body[field] !== course[field],
+      );
+
+      if (!hasUpdates) {
+        return res.status(400).json({
+          errors: ['Nenhum dado foi modificado.'],
+        });
+      }
+      const updatedCourse = await course.update(req.body);
+
+      const {
+        title,
+        description,
+        duration,
+      } = updatedCourse;
+
+      const totalStudents = await Course.count({
+        where: { students_id: id },
+      });
+
+      return res.json(
+        {
+          title,
+          description,
+          duration,
+          totalStudents,
+        },
+      );
+    } catch (error) {
+      return res.status(400).json({
+        errors: error.errors.map((err) => err.message),
+      });
+    }
+  }
+
   async destroy(req, res) {
     try {
       const { id } = await req.params;
