@@ -100,6 +100,7 @@ class CourseController {
 
       return res.json(
         {
+          id,
           title,
           description,
           duration,
