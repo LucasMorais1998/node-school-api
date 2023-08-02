@@ -10,6 +10,7 @@ import express from 'express';
 import studentRoutes from './src/routes/studentRoutes';
 import userRoutes from './src/routes/userRoutes';
 import courseRoutes from './src/routes/courseRoutes';
+import photoRoutes from './src/routes/photoRoutes';
 import tokenRoutes from './src/routes/tokenRoutes';
 
 class App {
@@ -28,6 +29,7 @@ class App {
     this.app.use('/students/', studentRoutes);
     this.app.use('/users/', userRoutes);
     this.app.use('/courses/', courseRoutes);
+    this.app.use('/photos/', photoRoutes);
     this.app.use('/tokens', tokenRoutes);
   }
 }
