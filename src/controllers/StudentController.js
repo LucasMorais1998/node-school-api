@@ -1,10 +1,25 @@
 /* eslint-disable camelcase */
+import Photo from '../models/Photo';
 import Student from '../models/Student';
 
 class StudentController {
   async index(req, res) {
     try {
-      const students = await Student.findAll();
+      const students = await Student.findAll({
+        attributes: [
+          'id',
+          'name',
+          'last_name',
+          'email',
+          'age',
+          'weight',
+          'height',
+        ],
+        order: [['id', 'DESC']],
+        include: {
+          model: Photo,
+        },
+      });
 
       if (students.length === 0) return res.status(204).json([]);
 
