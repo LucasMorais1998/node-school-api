@@ -18,6 +18,7 @@ class StudentController {
         order: [['id', 'DESC']],
         include: {
           model: Photo,
+          attributes: { exclude: ['created_at', 'updated_at'] },
         },
       });
 
