@@ -10,7 +10,7 @@ export default class Student extends Model {
           validate: {
             len: {
               args: [3, 255],
-              msg: 'O nome precisa ter entre 3 e 255 caracteres.',
+              msg: 'name needs to have between 3 and 255 characters.',
             },
           },
         },
@@ -20,7 +20,7 @@ export default class Student extends Model {
           validate: {
             len: {
               args: [3, 255],
-              msg: 'O sobrenome precisa ter entre 3 e 255 caracteres.',
+              msg: 'last_name needs to have between 3 and 255 characters.',
             },
           },
         },
@@ -28,11 +28,11 @@ export default class Student extends Model {
           type: Sequelize.STRING,
           defaultValue: '',
           unique: {
-            msg: 'O e-mail já existe.',
+            msg: 'email already exists.',
           },
           validate: {
             isEmail: {
-              msg: 'E-mail inválido.',
+              msg: 'Invalid email.',
             },
           },
         },
@@ -41,7 +41,7 @@ export default class Student extends Model {
           defaultValue: '',
           validate: {
             isInt: {
-              msg: 'A idade precisa ser um número inteiro.',
+              msg: 'age needs to be an integer number.',
             },
           },
         },
@@ -50,7 +50,7 @@ export default class Student extends Model {
           defaultValue: '',
           validate: {
             isFloat: {
-              msg: 'O peso precisa ser um número inteiro ou de ponto flutuante.',
+              msg: 'weight needs to be an integer or float number.',
             },
           },
         },
@@ -59,7 +59,7 @@ export default class Student extends Model {
           defaultValue: '',
           validate: {
             isFloat: {
-              msg: 'A altura precisa ser um número inteiro ou de ponto flutuante.',
+              msg: 'height needs to be an integer or float number.',
             },
           },
         },

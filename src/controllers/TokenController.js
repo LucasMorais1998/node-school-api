@@ -7,7 +7,9 @@ class TokenController {
       const { email = '', password = '' } = req.body;
 
       if (!email || !password) {
-        return res.status(401).json({ errors: ['E-mail ou senha inválidos.'] });
+        return res
+          .status(401)
+          .json({ errors: ['Invalid email or password..'] });
       }
 
       const user = await User.findOne({
@@ -17,11 +19,11 @@ class TokenController {
       });
 
       if (!user) {
-        return res.status(401).json({ errors: ['Usuário não encontrado.'] });
+        return res.status(401).json({ errors: ['User not found..'] });
       }
 
       if (!(await user.isValidPassword(password))) {
-        return res.status(401).json({ errors: ['E-mail ou senha inválidos.'] });
+        return res.status(401).json({ errors: ['Invalid email or password.'] });
       }
 
       const { id } = user;

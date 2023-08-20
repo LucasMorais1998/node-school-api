@@ -21,14 +21,14 @@ class UserController {
       const user = await User.findByPk(req.userId);
 
       if (!user) {
-        return res.status(404).json({ errors: ['Usuário não encontrado.'] });
+        return res.status(404).json({ errors: ['User not found.'] });
       }
 
       const { name, email } = req.body;
 
       if (!name && !email) {
         return res.status(400).json({
-          errors: ['Nenhum dado de atualização foi enviado.'],
+          errors: ['No update data has been sent.'],
         });
       }
 
@@ -44,7 +44,7 @@ class UserController {
 
       if (!hasUpdates) {
         return res.status(400).json({
-          errors: ['Nenhum dado foi modificado.'],
+          errors: ['No data has been modified.'],
         });
       }
 
@@ -52,7 +52,7 @@ class UserController {
 
       const { id, name: updatedName, email: updatedEmail } = updatedUser;
 
-      return res.json({ id, updatedName, updatedEmail });
+      return res.json({ id, name: updatedName, email: updatedEmail });
     } catch (error) {
       console.error(error.errors.map((err) => err.message));
       return res.status(400).json({
@@ -66,7 +66,7 @@ class UserController {
       const user = await User.findByPk(req.userId);
 
       if (!user) {
-        return res.status(404).json({ errors: ['Usuário não encontrado.'] });
+        return res.status(404).json({ errors: ['User not found.'] });
       }
 
       await user.destroy();

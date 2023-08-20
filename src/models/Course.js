@@ -8,12 +8,12 @@ export default class Course extends Model {
           type: Sequelize.STRING,
           defaultValue: '',
           unique: {
-            msg: 'O curso já está cadastrado no sistema.',
+            msg: 'The course is already registered in the system.',
           },
           validate: {
             len: {
               args: [4, 60],
-              msg: 'O nome do curso precisa ter entre 4 e 60 caracteres.',
+              msg: 'The course title must have between 4 and 60 characters.',
             },
           },
         },
@@ -26,7 +26,7 @@ export default class Course extends Model {
           defaultValue: '',
           validate: {
             isInt: {
-              msg: 'A duração do curso precisa ser um número inteiro.',
+              msg: 'The course duration needs to be an integer number.',
             },
           },
         },

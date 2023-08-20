@@ -16,11 +16,13 @@ class CourseController {
     try {
       const { id } = await req.params;
 
-      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+      if (!id) return res.status(400).json({ errors: ['id is required.'] });
 
       const course = await Course.findByPk(id);
 
-      if (!course) return res.status(400).json({ errors: ['Curso não encontrado.'] });
+      if (!course) {
+        return res.status(400).json({ errors: ['Course not found.'] });
+      }
 
       const { title, description, duration } = course;
       const totalStudents = await Course.count({
@@ -45,20 +47,16 @@ class CourseController {
     try {
       const newCourse = await Course.create(req.body);
 
-      const {
+      const { id, title, description, duration } = newCourse;
+
+      return res.status(201).json({
         id,
         title,
         description,
         duration,
-      } = newCourse;
-
-      return res.status(201).json({
-        id, title, description, duration,
       });
     } catch (error) {
-      console.error(
-        error,
-      );
+      console.error(error);
       return res.status(400).json({
         errors: error.errors.map((err) => err.message),
       });
@@ -69,12 +67,12 @@ class CourseController {
     try {
       const { id } = await req.params;
 
-      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+      if (!id) return res.status(400).json({ errors: ['id is required.'] });
 
       const course = await Course.findByPk(id);
 
       if (!course) {
-        return res.status(400).json({ errors: ['Curso não encontrado.'] });
+        return res.status(400).json({ errors: ['Course not found.'] });
       }
 
       const hasUpdates = Object.keys(req.body).some(
@@ -83,30 +81,24 @@ class CourseController {
 
       if (!hasUpdates) {
         return res.status(400).json({
-          errors: ['Nenhum dado foi modificado.'],
+          errors: ['No data has been modified.'],
         });
       }
       const updatedCourse = await course.update(req.body);
 
-      const {
-        title,
-        description,
-        duration,
-      } = updatedCourse;
+      const { title, description, duration } = updatedCourse;
 
       const totalStudents = await Course.count({
         where: { students_id: id },
       });
 
-      return res.json(
-        {
-          id,
-          title,
-          description,
-          duration,
-          totalStudents,
-        },
-      );
+      return res.json({
+        id,
+        title,
+        description,
+        duration,
+        totalStudents,
+      });
     } catch (error) {
       return res.status(400).json({
         errors: error.errors.map((err) => err.message),
@@ -118,11 +110,13 @@ class CourseController {
     try {
       const { id } = await req.params;
 
-      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+      if (!id) return res.status(400).json({ errors: ['id is required.'] });
 
       const course = await Course.findByPk(id);
 
-      if (!course) return res.status(400).json({ errors: ['Curso não encontrado.'] });
+      if (!course) {
+        return res.status(400).json({ errors: ['Course not found.'] });
+      }
 
       await course.destroy();
       return res.status(204).send();

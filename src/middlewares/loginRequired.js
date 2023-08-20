@@ -5,7 +5,7 @@ export default async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(401).json({ errors: ['É necessário estar logado.'] });
+    return res.status(401).json({ errors: ['You need to be logged in.'] });
   }
 
   const [, token] = authorization.split(' ');
@@ -22,13 +22,13 @@ export default async (req, res, next) => {
       },
     });
 
-    if (!user) return res.status(401).json({ errors: ['Usuário inválido.'] });
+    if (!user) return res.status(401).json({ errors: ['Invalid user.'] });
 
     req.userId = id;
     req.userEmail = email;
 
     return next();
   } catch (error) {
-    return res.status(401).json({ errors: ['Token expirado ou inválido.'] });
+    return res.status(401).json({ errors: ['Expired or invalid token.'] });
   }
 };

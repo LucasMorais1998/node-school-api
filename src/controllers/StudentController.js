@@ -36,7 +36,7 @@ class StudentController {
     try {
       const { id } = await req.params;
 
-      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+      if (!id) return res.status(400).json({ errors: ['id is required.'] });
 
       const student = await Student.findByPk(id, {
         attributes: [
@@ -55,7 +55,9 @@ class StudentController {
         },
       });
 
-      if (!student) return res.status(400).json({ errors: ['Aluno não encontrado.'] });
+      if (!student) {
+        return res.status(400).json({ errors: ['Student not found.'] });
+      }
 
       return res.json(student);
     } catch (error) {
@@ -69,15 +71,7 @@ class StudentController {
     try {
       const newStudent = await Student.create(req.body);
 
-      const {
-        id,
-        name,
-        last_name,
-        email,
-        age,
-        weight,
-        height,
-      } = newStudent;
+      const { id, name, last_name, email, age, weight, height } = newStudent;
 
       return res.status(201).json({
         id,
@@ -100,13 +94,13 @@ class StudentController {
       const { id } = await req.params;
 
       if (!id) {
-        return res.status(400).json({ errors: ['É necessário um ID.'] });
+        return res.status(400).json({ errors: ['id is required.'] });
       }
 
       const student = await Student.findByPk(id);
 
       if (!student) {
-        return res.status(400).json({ errors: ['Aluno não encontrado.'] });
+        return res.status(400).json({ errors: ['Student not found.'] });
       }
 
       const hasUpdates = Object.keys(req.body).some(
@@ -115,32 +109,23 @@ class StudentController {
 
       if (!hasUpdates) {
         return res.status(400).json({
-          errors: ['Nenhum dado foi modificado.'],
+          errors: ['No data has been modified.'],
         });
       }
 
       const updatedStudent = await student.update(req.body);
 
-      const {
+      const { name, last_name, email, age, weight, height } = updatedStudent;
+
+      return res.json({
+        id,
         name,
         last_name,
         email,
         age,
         weight,
         height,
-      } = updatedStudent;
-
-      return res.json(
-        {
-          id,
-          name,
-          last_name,
-          email,
-          age,
-          weight,
-          height,
-        },
-      );
+      });
     } catch (error) {
       return res.status(400).json({
         errors: error.errors.map((err) => err.message),
@@ -152,11 +137,13 @@ class StudentController {
     try {
       const { id } = await req.params;
 
-      if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
+      if (!id) return res.status(400).json({ errors: ['id is required.'] });
 
       const student = await Student.findByPk(id);
 
-      if (!student) return res.status(400).json({ errors: ['Aluno não encontrado.'] });
+      if (!student) {
+        return res.status(400).json({ errors: ['Student not found.'] });
+      }
 
       await student.destroy();
       return res.status(204).send();

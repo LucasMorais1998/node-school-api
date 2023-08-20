@@ -7,11 +7,11 @@ dotenv.config();
 import './src/database';
 import express from 'express';
 
-import studentRoutes from './src/routes/studentRoutes';
-import userRoutes from './src/routes/userRoutes';
 import courseRoutes from './src/routes/courseRoutes';
 import photoRoutes from './src/routes/photoRoutes';
+import studentRoutes from './src/routes/studentRoutes';
 import tokenRoutes from './src/routes/tokenRoutes';
+import userRoutes from './src/routes/userRoutes';
 
 class App {
   constructor() {

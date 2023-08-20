@@ -9,7 +9,7 @@ export default class Photo extends Model {
           defaultValue: '',
           validate: {
             notEmpty: {
-              msg: 'Originalname não pode ficar vazio.',
+              msg: 'originalname cannot be empty.',
             },
           },
         },
@@ -18,7 +18,7 @@ export default class Photo extends Model {
           defaultValue: '',
           validate: {
             notEmpty: {
-              msg: 'Filename não pode ficar vazio.',
+              msg: 'filename cannot be empty.',
             },
           },
         },
