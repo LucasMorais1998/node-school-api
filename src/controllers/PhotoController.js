@@ -8,26 +8,59 @@ const upload = multer(multerConfig).single('photo');
 
 class PhotoController {
   store(req, res) {
-    try {
-      return upload(req, res, async (err) => {
-        if (err) {
-          return res.status(400).json({
-            errors: [err.code],
+    return upload(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({
+          errors: [err.code],
+        });
+      }
+
+      try {
+        const { originalname, filename } = req.file;
+        const { student_id } = req.body;
+
+        const photo = await Photo.findOne({ where: { student_id } });
+
+        if (photo) {
+          photo.originalname = originalname;
+          photo.filename = filename;
+
+          await photo.save();
+
+          const { id } = photo;
+
+          return res.json({
+            id,
+            originalname,
+            filename,
+            student_id,
           });
         }
 
-        const { originalname, filename } = req.file;
-        const { student_id } = req.body;
-        const photo = await Photo.create({ originalname, filename, student_id });
+        const newPhoto = await Photo.create({
+          originalname,
+          filename,
+          student_id,
+        });
 
-        return res.json(photo);
-      });
-    } catch (error) {
-      console.error(error.errors.map((err) => err.message));
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
-    }
+        const {
+          id,
+          originalname: newOriginalname,
+          filename: newFilename,
+        } = newPhoto;
+
+        return res.json({
+          id,
+          originalname: newOriginalname,
+          filename: newFilename,
+          student_id,
+        });
+      } catch (error) {
+        return res.status(400).json({
+          errors: error.errors.map((e) => e.message),
+        });
+      }
+    });
   }
 }
 
