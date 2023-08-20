@@ -38,19 +38,26 @@ class StudentController {
 
       if (!id) return res.status(400).json({ errors: ['É necessário um ID.'] });
 
-      const student = await Student.findByPk(id);
+      const student = await Student.findByPk(id, {
+        attributes: [
+          'id',
+          'name',
+          'last_name',
+          'email',
+          'age',
+          'weight',
+          'height',
+        ],
+        order: [['id', 'DESC']],
+        include: {
+          model: Photo,
+          attributes: { exclude: ['created_at', 'updated_at'] },
+        },
+      });
 
       if (!student) return res.status(400).json({ errors: ['Aluno não encontrado.'] });
 
-      const {
-        name, last_name, email, age, weight, height,
-      } = student;
-
-      return res.json(
-        {
-          id, name, last_name, email, age, weight, height,
-        },
-      );
+      return res.json(student);
     } catch (error) {
       return res.status(400).json({
         errors: error.errors.map((err) => err.message),
