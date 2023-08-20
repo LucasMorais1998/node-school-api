@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import Photo from '../models/Photo';
 import Student from '../models/Student';
 
