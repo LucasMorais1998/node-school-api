@@ -1,9 +1,27 @@
 import Course from '../models/Course';
+import Student from '../models/Student';
 
 class CourseController {
   async index(req, res) {
     try {
-      return res.json('ok');
+      const courses = await Course.findAll({
+        attributes: ['id', 'title', 'description', 'duration'],
+        order: [['id', 'DESC']],
+        include: [{
+          model: Student,
+          as: 'Students',
+        }],
+      });
+
+      const allCourses = courses.map((course) => ({
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        duration: course.duration,
+        total_students: course.Students.length,
+      }));
+
+      return res.json(allCourses);
     } catch (error) {
       console.error(error);
       return res.status(400).json({
