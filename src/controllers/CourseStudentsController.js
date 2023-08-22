@@ -41,6 +41,46 @@ class CourseStudentsController {
       });
     }
   }
+
+  async destroy(req, res) {
+    try {
+      const { student_id, course_id } = req.params;
+
+      if (!student_id || !course_id) {
+        return res.status(400).json({ errors: ['Student ID and Course ID are required.'] });
+      }
+
+      const student = await Student.findByPk(student_id);
+      if (!student) {
+        return res.status(404).json({ errors: ['Student not found.'] });
+      }
+
+      const course = await Course.findByPk(course_id);
+      if (!course) {
+        return res.status(404).json({ errors: ['Course not found.'] });
+      }
+
+      const enrollment = await CourseStudents.findOne({
+        where: {
+          student_id,
+          course_id,
+        },
+      });
+
+      if (!enrollment) {
+        return res.status(404).json({ errors: ['Enrollment not found.'] });
+      }
+
+      await enrollment.destroy();
+
+      return res.json({ message: 'Enrollment deleted successfully.' });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        error: 'An internal server error occurred.',
+      });
+    }
+  }
 }
 const courseStudentsControllerInstance = new CourseStudentsController();
 export default courseStudentsControllerInstance;
