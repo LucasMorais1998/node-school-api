@@ -4,24 +4,39 @@ import Student from '../models/Student';
 class CourseController {
   async index(req, res) {
     try {
-      const courses = await Course.findAll({
+      const page = req.query.page || 1;
+      const perPage = 10;
+
+      const { count, rows: courses } = await Course.findAndCountAll({
         attributes: ['id', 'title', 'description', 'duration'],
         order: [['id', 'DESC']],
         include: [{
           model: Student,
-          as: 'Students',
+          as: 'students',
         }],
+        limit: perPage,
+        offset: (page - 1) * perPage,
       });
 
-      const allCourses = courses.map((course) => ({
+      const totalPages = Math.ceil(count / perPage);
+
+      const paginatedCourses = courses.map((course) => ({
         id: course.id,
         title: course.title,
         description: course.description,
         duration: course.duration,
-        total_students: course.Students.length,
+        totalStudents: course.students.length,
       }));
 
-      return res.json(allCourses);
+      if (paginatedCourses.length === 0) {
+        return res.status(204).send();
+      }
+
+      return res.json({
+        courses: paginatedCourses,
+        totalPages,
+        currentPage: page,
+      });
     } catch (error) {
       console.error(error);
       return res.status(400).json({
