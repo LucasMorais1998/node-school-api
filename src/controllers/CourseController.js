@@ -62,7 +62,7 @@ class CourseController {
       });
 
       if (!course) {
-        return res.status(400).json({ errors: ['Course not found.'] });
+        return res.status(404).json({ errors: ['Course not found.'] });
       }
 
       const totalStudents = await CourseStudents.count({
@@ -113,7 +113,7 @@ class CourseController {
       const course = await Course.findByPk(id);
 
       if (!course) {
-        return res.status(400).json({ errors: ['Course not found.'] });
+        return res.status(404).json({ errors: ['Course not found.'] });
       }
 
       const hasUpdates = Object.keys(req.body).some(
@@ -121,9 +121,7 @@ class CourseController {
       );
 
       if (!hasUpdates) {
-        return res.status(400).json({
-          errors: ['No data has been modified.'],
-        });
+        return res.status(204).end();
       }
       const updatedCourse = await course.update(req.body);
 
@@ -156,7 +154,7 @@ class CourseController {
       const course = await Course.findByPk(id);
 
       if (!course) {
-        return res.status(400).json({ errors: ['Course not found.'] });
+        return res.status(404).json({ errors: ['Course not found.'] });
       }
 
       await course.destroy();
