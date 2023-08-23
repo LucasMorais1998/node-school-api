@@ -1,4 +1,5 @@
 import Course from '../models/Course';
+import CourseStudents from '../models/CourseStudents';
 import Student from '../models/Student';
 
 class CourseController {
@@ -47,28 +48,35 @@ class CourseController {
 
   async show(req, res) {
     try {
-      const { id } = await req.params;
+      const { id } = req.params;
 
       if (!id) return res.status(400).json({ errors: ['id is required.'] });
 
-      const course = await Course.findByPk(id);
+      const course = await Course.findByPk(id, {
+        attributes: ['id', 'title', 'description', 'duration'],
+        include: [{
+          model: Student,
+          as: 'students',
+          attributes: [],
+        }],
+      });
 
       if (!course) {
         return res.status(400).json({ errors: ['Course not found.'] });
       }
 
-      const { title, description, duration } = course;
-      const totalStudents = await Course.count({
-        where: { students_id: id },
+      const totalStudents = await CourseStudents.count({
+        where: {
+          student_id: course.id,
+        },
       });
 
-      return res.json({
-        id,
-        title,
-        description,
-        duration,
+      const courseWithTotalStudents = {
+        ...course.toJSON(),
         totalStudents,
-      });
+      };
+
+      return res.json(courseWithTotalStudents);
     } catch (error) {
       return res.status(400).json({
         error: error.message,
