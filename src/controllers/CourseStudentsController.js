@@ -13,7 +13,9 @@ class CourseStudentsController {
 
       if (!student) return res.status(404).json({ errors: ['Student not found.'] });
 
-      const course = await Course.findByPk(course_id);
+      const course = await Course.findByPk(course_id, {
+        attributes: ['id', 'title', 'description', 'duration'],
+      });
 
       if (!course) return res.status(404).json({ errors: ['Course not found.'] });
 
@@ -33,7 +35,7 @@ class CourseStudentsController {
         course_id,
       });
 
-      return res.json(course);
+      return res.status(204).send();
     } catch (error) {
       console.error(error);
       return res.status(400).json({
