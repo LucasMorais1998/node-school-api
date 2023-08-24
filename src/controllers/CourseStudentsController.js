@@ -49,7 +49,7 @@ class CourseStudentsController {
       const { student_id, course_id } = req.params;
 
       if (!student_id || !course_id) {
-        return res.status(400).json({ errors: ['Student ID and Course ID are required.'] });
+        return res.status(400).json({ errors: ['id\'s are required.'] });
       }
 
       const student = await Student.findByPk(student_id);
@@ -70,12 +70,11 @@ class CourseStudentsController {
       });
 
       if (!enrollment) {
-        return res.status(404).json({ errors: ['Enrollment not found.'] });
+        return res.status(400).json({ errors: ['Student is not enrolled in the course.'] });
       }
 
       await enrollment.destroy();
-
-      return res.json({ message: 'Enrollment deleted successfully.' });
+      return res.status(204).send();
     } catch (error) {
       console.error(error);
       return res.status(500).json({
