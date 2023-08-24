@@ -67,7 +67,7 @@ class CourseController {
 
       const totalStudents = await CourseStudents.count({
         where: {
-          student_id: course.id,
+          course_id: course.id,
         },
       });
 
