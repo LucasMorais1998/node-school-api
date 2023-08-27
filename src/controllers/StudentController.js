@@ -34,7 +34,7 @@ class StudentController {
 
   async show(req, res) {
     try {
-      const { id } = await req.params;
+      const { id } = req.params;
 
       if (!id) return res.status(400).json({ errors: ['id is required.'] });
 
@@ -91,7 +91,7 @@ class StudentController {
 
   async update(req, res) {
     try {
-      const { id } = await req.params;
+      const { id } = req.params;
 
       if (!id) {
         return res.status(400).json({ errors: ['id is required.'] });
@@ -135,7 +135,7 @@ class StudentController {
 
   async destroy(req, res) {
     try {
-      const { id } = await req.params;
+      const { id } = req.params;
 
       if (!id) return res.status(400).json({ errors: ['id is required.'] });
 

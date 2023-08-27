@@ -11,7 +11,7 @@ import courseRoutes from './src/routes/courseRoutes';
 import courseStudentsRoutes from './src/routes/courseStudentsRoutes';
 import photoRoutes from './src/routes/photoRoutes';
 import studentRoutes from './src/routes/studentRoutes';
-import tokenRoutes from './src/routes/tokenRoutes';
+import authRoutes from './src/routes/authRoutes';
 import userRoutes from './src/routes/userRoutes';
 
 class App {
@@ -32,7 +32,7 @@ class App {
     this.app.use('/courses/', courseRoutes);
     this.app.use('/photos/', photoRoutes);
     this.app.use('/course-students/', courseStudentsRoutes);
-    this.app.use('/tokens', tokenRoutes);
+    this.app.use('/tokens', authRoutes);
   }
 }
 
