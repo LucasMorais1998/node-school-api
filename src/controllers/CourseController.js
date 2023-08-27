@@ -127,8 +127,10 @@ class CourseController {
 
       const { title, description, duration } = updatedCourse;
 
-      const totalStudents = await Course.count({
-        where: { students_id: id },
+      const totalStudents = await CourseStudents.count({
+        where: {
+          course_id: course.id,
+        },
       });
 
       return res.json({
