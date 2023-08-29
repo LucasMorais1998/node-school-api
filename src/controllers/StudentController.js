@@ -1,3 +1,4 @@
+import errorHandler from '../middlewares/errorHandlerMiddleware';
 import Photo from '../models/Photo';
 import Student from '../models/Student';
 
@@ -25,10 +26,7 @@ class StudentController {
 
       return res.json(students);
     } catch (error) {
-      console.error(error);
-      return res.status(400).json({
-        error: error.message,
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -36,7 +34,9 @@ class StudentController {
     try {
       const { id } = req.params;
 
-      if (!id) return res.status(400).json({ errors: ['id is required.'] });
+      if (!/^\d+$/.test(id)) {
+        return res.status(400).json({ errors: ['Invalid ID format'] });
+      }
 
       const student = await Student.findByPk(id, {
         attributes: [
@@ -61,9 +61,7 @@ class StudentController {
 
       return res.json(student);
     } catch (error) {
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -83,9 +81,7 @@ class StudentController {
         height,
       });
     } catch (error) {
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -127,9 +123,7 @@ class StudentController {
         height,
       });
     } catch (error) {
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -148,10 +142,7 @@ class StudentController {
       await student.destroy();
       return res.status(204).send();
     } catch (error) {
-      console.error(error.errors.map((err) => err.message));
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 }
