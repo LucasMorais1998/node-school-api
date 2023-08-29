@@ -1,3 +1,4 @@
+import errorHandler from '../middlewares/errorHandlerMiddleware';
 import User from '../models/User';
 
 class UserController {
@@ -9,10 +10,7 @@ class UserController {
 
       return res.status(201).json({ id, name, email });
     } catch (error) {
-      console.error(error.errors.map((err) => err.message));
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -54,10 +52,7 @@ class UserController {
 
       return res.json({ id, name: updatedName, email: updatedEmail });
     } catch (error) {
-      console.error(error.errors.map((err) => err.message));
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -72,10 +67,7 @@ class UserController {
       await user.destroy();
       return res.status(204).send();
     } catch (error) {
-      console.error(error.errors.map((err) => err.message));
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 }
