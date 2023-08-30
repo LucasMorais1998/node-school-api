@@ -1,7 +1,7 @@
 export default function errorHandler(err, req, res) {
   console.error(err);
 
-  if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
+  if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError' || err.name === 'SequelizeForeignKeyConstraintError') {
     return res.status(400).json({
       errors: err.errors.map((error) => error.message),
     });
