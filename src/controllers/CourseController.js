@@ -1,3 +1,4 @@
+import errorHandler from '../middlewares/errorHandlerMiddleware';
 import Course from '../models/Course';
 import CourseStudents from '../models/CourseStudents';
 import Student from '../models/Student';
@@ -39,10 +40,7 @@ class CourseController {
         currentPage: page,
       });
     } catch (error) {
-      console.error(error);
-      return res.status(400).json({
-        error: error.message,
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -78,9 +76,7 @@ class CourseController {
 
       return res.json(courseWithTotalStudents);
     } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -97,10 +93,7 @@ class CourseController {
         duration,
       });
     } catch (error) {
-      console.error(error);
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -141,9 +134,7 @@ class CourseController {
         totalStudents,
       });
     } catch (error) {
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -162,10 +153,7 @@ class CourseController {
       await course.destroy();
       return res.status(204).send();
     } catch (error) {
-      console.error(error.errors.map((err) => err.message));
-      return res.status(400).json({
-        errors: error.errors.map((err) => err.message),
-      });
+      return errorHandler(error, req, res);
     }
   }
 }
