@@ -1,3 +1,4 @@
+import errorHandler from '../middlewares/errorHandlerMiddleware';
 import Course from '../models/Course';
 import CourseStudents from '../models/CourseStudents';
 import Student from '../models/Student';
@@ -37,10 +38,7 @@ class CourseStudentsController {
 
       return res.status(204).send();
     } catch (error) {
-      console.error(error);
-      return res.status(400).json({
-        error: error.message,
-      });
+      return errorHandler(error, req, res);
     }
   }
 
@@ -76,10 +74,7 @@ class CourseStudentsController {
       await enrollment.destroy();
       return res.status(204).send();
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        error: 'An internal server error occurred.',
-      });
+      return errorHandler(error, req, res);
     }
   }
 }

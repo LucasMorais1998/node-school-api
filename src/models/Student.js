@@ -1,4 +1,10 @@
 import Sequelize, { Model } from 'sequelize';
+import {
+  validatePositiveInteger,
+  validatePositiveNonNegativeNumber,
+  validateString,
+  validationMessages,
+} from '../utils/validations';
 
 export default class Student extends Model {
   static init(sequelize) {
@@ -8,9 +14,12 @@ export default class Student extends Model {
           type: Sequelize.STRING,
           defaultValue: '',
           validate: {
+            isValidString(value) {
+              validateString(value, 'Name');
+            },
             len: {
               args: [3, 255],
-              msg: 'name needs to have between 3 and 255 characters.',
+              msg: validationMessages.len('Name', 3, 255),
             },
           },
         },
@@ -18,9 +27,12 @@ export default class Student extends Model {
           type: Sequelize.STRING,
           defaultValue: '',
           validate: {
+            isValidString(value) {
+              validateString(value, 'Last_name');
+            },
             len: {
               args: [3, 255],
-              msg: 'last_name needs to have between 3 and 255 characters.',
+              msg: validationMessages.len('Last_name', 3, 255),
             },
           },
         },
@@ -28,29 +40,29 @@ export default class Student extends Model {
           type: Sequelize.STRING,
           defaultValue: '',
           unique: {
-            msg: 'email already exists.',
+            msg: validationMessages.uniqueEmail,
           },
           validate: {
             isEmail: {
-              msg: 'Invalid email.',
+              msg: validationMessages.invalidEmail,
             },
           },
         },
         age: {
           type: Sequelize.INTEGER,
-          defaultValue: '',
+          defaultValue: 0,
           validate: {
-            isInt: {
-              msg: 'age needs to be an integer number.',
+            isValidAge(value) {
+              validatePositiveInteger(value, 'Age');
             },
           },
         },
         weight: {
           type: Sequelize.FLOAT,
-          defaultValue: '',
+          defaultValue: 0,
           validate: {
-            isFloat: {
-              msg: 'weight needs to be an integer or float number.',
+            isValidWeight(value) {
+              validatePositiveNonNegativeNumber(value, 'Weight');
             },
           },
         },
@@ -58,8 +70,8 @@ export default class Student extends Model {
           type: Sequelize.FLOAT,
           defaultValue: '',
           validate: {
-            isFloat: {
-              msg: 'height needs to be an integer or float number.',
+            isValidHeight(value) {
+              validatePositiveNonNegativeNumber(value, 'Height');
             },
           },
         },

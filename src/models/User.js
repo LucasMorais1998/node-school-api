@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import Sequelize, { Model } from 'sequelize';
+import { validateString, validationMessages } from '../utils/validations';
 
 export default class User extends Model {
   static init(sequelize) {
@@ -9,9 +10,12 @@ export default class User extends Model {
           type: Sequelize.STRING,
           defaultValue: '',
           validate: {
+            isValidString(value) {
+              validateString(value, 'Name');
+            },
             len: {
               args: [3, 255],
-              msg: 'name needs to have between 3 and 255 characters.',
+              msg: validationMessages.len('Name', 3, 255),
             },
           },
         },
@@ -19,11 +23,11 @@ export default class User extends Model {
           type: Sequelize.STRING,
           defaultValue: '',
           unique: {
-            msg: 'email already exists.',
+            msg: validationMessages.uniqueEmail,
           },
           validate: {
             isEmail: {
-              msg: 'Invalid email.',
+              msg: validationMessages.invalidEmail,
             },
           },
         },
@@ -37,7 +41,7 @@ export default class User extends Model {
           validate: {
             len: {
               args: [8, 50],
-              msg: 'password needs to have between 8 and 50 characters.',
+              msg: validationMessages.len('Password', 8, 50),
             },
           },
         },
