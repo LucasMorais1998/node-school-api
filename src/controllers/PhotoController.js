@@ -3,6 +3,7 @@ import multerConfig from '../config/multer';
 import errorHandler from '../middlewares/errorHandlerMiddleware';
 
 import Photo from '../models/Photo';
+import Student from '../models/Student';
 
 const upload = multer(multerConfig).single('photo');
 
@@ -35,6 +36,13 @@ class PhotoController {
         if (!student_id) {
           return res.status(400).json({
             errors: ['student_id is required.'],
+          });
+        }
+
+        const student = await Student.findOne({ where: { id: student_id } });
+        if (!student) {
+          return res.status(404).json({
+            errors: ['Student not found.'],
           });
         }
 
