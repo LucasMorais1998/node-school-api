@@ -5,15 +5,15 @@ import { resolve } from 'path';
 
 dotenv.config();
 
-import './src/database';
+import './database';
 import express from 'express';
 
-import courseRoutes from './src/routes/courseRoutes';
-import courseStudentsRoutes from './src/routes/courseStudentsRoutes';
-import photoRoutes from './src/routes/photoRoutes';
-import studentRoutes from './src/routes/studentRoutes';
-import authRoutes from './src/routes/authRoutes';
-import userRoutes from './src/routes/userRoutes';
+import courseRoutes from './routes/courseRoutes';
+import courseStudentsRoutes from './routes/courseStudentsRoutes';
+import photoRoutes from './routes/photoRoutes';
+import studentRoutes from './routes/studentRoutes';
+import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 
 class App {
   constructor() {
