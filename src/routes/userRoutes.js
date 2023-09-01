@@ -4,7 +4,7 @@ import authMiddleware from '../middlewares/authMiddleware';
 
 const router = new Router();
 
-router.post('/', userController.store);
+router.post('/', authMiddleware, userController.store);
 router.put('/', authMiddleware, userController.update);
 router.delete('/', authMiddleware, userController.destroy);
 
