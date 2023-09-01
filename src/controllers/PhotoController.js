@@ -54,12 +54,13 @@ class PhotoController {
 
           await photo.save();
 
-          const { id } = photo;
+          const { id, url } = photo;
 
           return res.json({
             id,
             originalname,
             filename,
+            url,
             student_id,
           });
         }
@@ -74,6 +75,7 @@ class PhotoController {
           id,
           originalname: newOriginalname,
           filename: newFilename,
+          url,
         } = newPhoto;
 
         return res.json({
@@ -81,6 +83,7 @@ class PhotoController {
           originalname: newOriginalname,
           filename: newFilename,
           student_id,
+          url,
         });
       });
     } catch (error) {
